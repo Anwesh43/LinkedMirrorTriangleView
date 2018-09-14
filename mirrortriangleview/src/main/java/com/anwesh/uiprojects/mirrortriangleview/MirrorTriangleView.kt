@@ -60,16 +60,27 @@ class MirrorTriangleView (ctx : Context) : View(ctx) {
         return true
     }
 
-    data class State(var scale : Float = 0f, var dir : Float = 0f, var prevScale : Float = 0f) {
+    data class State(var scale : Float = 0f, var dir : Float = 0f, var prevScale : Float = 0F, var t : Int = 0) {
+        val MAX_T : Int = 5
 
         fun update(cb : (Float) -> Unit) {
-            scale += 0.05f * dir
-            if (Math.abs(scale - prevScale) > 1) {
-                scale = prevScale + dir
-                dir = 0f
-                prevScale = scale
-                cb(prevScale)
+            if (t == 0 || t == MAX_T) {
+                scale += 0.05f * dir
+                if (scale > 0.49f && scale < 0.51f) {
+                    scale = 0.5f
+                    t++
+                }
+                if (Math.abs(scale - prevScale) > 1) {
+                    scale = prevScale + dir
+                    dir = 0f
+                    prevScale = scale
+                    t = 0
+                    cb(prevScale)
+                }
+            } else {
+                t++
             }
+
         }
 
         fun startUpdating(cb : () -> Unit) {
