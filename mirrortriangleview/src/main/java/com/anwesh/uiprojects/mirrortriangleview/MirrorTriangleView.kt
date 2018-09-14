@@ -28,7 +28,7 @@ fun Canvas.drawMTNode(i : Int, scale : Float, paint : Paint) {
     for (j in 0..1) {
         val sf : Float = 1f - 2 * (j % 2)
         save()
-        translate(0f, (h/2 - size) * sf * sc2)
+        translate(0f, -(h/2) * sf * sc2)
         rotate(180f * j * sc1 + 180f * sc2)
         val path: Path = Path()
         path.moveTo(-size/2, 0f)
@@ -63,7 +63,7 @@ class MirrorTriangleView (ctx : Context) : View(ctx) {
     data class State(var scale : Float = 0f, var dir : Float = 0f, var prevScale : Float = 0f) {
 
         fun update(cb : (Float) -> Unit) {
-            scale += 0.1f * dir
+            scale += 0.05f * dir
             if (Math.abs(scale - prevScale) > 1) {
                 scale = prevScale + dir
                 dir = 0f
@@ -201,7 +201,7 @@ class MirrorTriangleView (ctx : Context) : View(ctx) {
         fun create(activity : Activity) : MirrorTriangleView {
             val view : MirrorTriangleView = MirrorTriangleView(activity)
             activity.setContentView(view)
-            return view 
+            return view
         }
     }
 }
