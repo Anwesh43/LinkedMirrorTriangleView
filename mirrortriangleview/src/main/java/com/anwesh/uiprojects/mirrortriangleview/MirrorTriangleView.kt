@@ -172,4 +172,26 @@ class MirrorTriangleView (ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : MirrorTriangleView) {
+
+        private val animator : Animator = Animator(view)
+        private val mt : MirrorTriangle = MirrorTriangle(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#BDBDBD"))
+            mt.draw(canvas, paint)
+            animator.animate {
+                mt.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            mt.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
