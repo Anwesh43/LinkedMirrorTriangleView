@@ -4,6 +4,7 @@ package com.anwesh.uiprojects.mirrortriangleview
  * Created by anweshmishra on 15/09/18.
  */
 
+import android.app.Activity
 import android.view.View
 import android.view.MotionEvent
 import android.content.Context
@@ -193,6 +194,14 @@ class MirrorTriangleView (ctx : Context) : View(ctx) {
             mt.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+        fun create(activity : Activity) : MirrorTriangleView {
+            val view : MirrorTriangleView = MirrorTriangleView(activity)
+            activity.setContentView(view)
+            return view 
         }
     }
 }
