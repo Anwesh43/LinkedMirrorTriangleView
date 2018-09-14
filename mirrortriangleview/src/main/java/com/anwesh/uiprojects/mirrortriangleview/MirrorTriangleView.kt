@@ -105,4 +105,48 @@ class MirrorTriangleView (ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class MTNode(var i : Int, val state : State = State()) {
+
+        private var next : MTNode? = null
+        private var prev : MTNode? = null
+
+        init {
+            addNeighbor()
+        }
+
+        fun addNeighbor() {
+            if (i < nodes - 1) {
+                next = MTNode(i + 1)
+                next?.prev = this
+            }
+        }
+
+        fun update(cb : (Int, Float) -> Unit) {
+            state.update {
+                cb(i, it)
+            }
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            state.startUpdating(cb)
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : MTNode {
+            var curr : MTNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr
+            }
+            cb()
+            return this
+        }
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawMTNode(i, state.scale, paint)
+            next?.draw(canvas, paint)
+        }
+    }
 }
